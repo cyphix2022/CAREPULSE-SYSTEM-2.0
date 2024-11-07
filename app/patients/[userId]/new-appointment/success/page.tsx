@@ -9,12 +9,25 @@ const Success = () => {
         <Link href='/'>
         <Image
           src="/assets/icons/logo-full.svg"
+          width={1000}
+          height={1000}
           alt="logo"
-          width={100}
-          height={100}
           className="h-10 w-fit"
         />
         </Link>
+
+        <section className="flex flex-col items-center">
+          <Image
+          src="/assets/gifs/success.gif" 
+          width={280} 
+          height={300} 
+          alt="success"
+           />
+        <h2 className="header mb-6 max-w-[600px] text-center">
+          Your <span className="text-green-500">appointment request</span> has been
+          successfully submitted!
+        </h2>
+        </section>
       </div>
     </div>
   )
