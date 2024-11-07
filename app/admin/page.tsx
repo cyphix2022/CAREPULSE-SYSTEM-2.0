@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
 
 import { StatCard } from "@/components/StatCard";
+// eslint-disable-next-line no-unused-vars
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 
-const AdminPage = async () => {
+const Admin = async () => {
   const appointments = await getRecentAppointmentList();
 
   return (
@@ -15,8 +17,8 @@ const AdminPage = async () => {
         <Link href="/" className="cursor-pointer">
           <Image
             src="/assets/icons/logo-full.svg"
-            height={32}
             width={162}
+            height={32}
             alt="logo"
             className="h-8 w-fit"
           />
@@ -38,19 +40,19 @@ const AdminPage = async () => {
             type="appointments"
             count={appointments.scheduledCount}
             label="Scheduled appointments"
-            icon={"/assets/icons/appointments.svg"}
+            icon="/assets/icons/appointments.svg"
           />
           <StatCard
             type="pending"
             count={appointments.pendingCount}
             label="Pending appointments"
-            icon={"/assets/icons/pending.svg"}
+            icon="/assets/icons/pending.svg"
           />
           <StatCard
             type="cancelled"
             count={appointments.cancelledCount}
             label="Cancelled appointments"
-            icon={"/assets/icons/cancelled.svg"}
+            icon="/assets/icons/cancelled.svg"
           />
         </section>
 
@@ -60,4 +62,4 @@ const AdminPage = async () => {
   );
 };
 
-export default AdminPage;
+export default Admin;

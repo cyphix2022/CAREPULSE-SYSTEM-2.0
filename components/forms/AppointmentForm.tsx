@@ -12,6 +12,7 @@ import { Doctors } from "@/constants";
 import {
   createAppointment,
   updateAppointment,
+  /* updateAppointment, */
 } from "@/lib/actions/appointment.actions";
 import { getAppointmentSchema } from "@/lib/validation";
 import { Appointment } from "@/types/appwrite.types";
@@ -68,6 +69,7 @@ export const AppointmentForm = ({
         break;
       default:
         status = "pending";
+        break; // I have added this line of code
     }
 
     try {
@@ -103,6 +105,7 @@ export const AppointmentForm = ({
           type,
         };
 
+        // Am going to add AI help here
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
         if (updatedAppointment) {
@@ -218,3 +221,5 @@ export const AppointmentForm = ({
     </Form>
   );
 };
+
+// Jonathan changing files

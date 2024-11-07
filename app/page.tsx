@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { PatientForm } from "@/components/forms/PatientForm";
-import { PasskeyModal } from "@/components/PasskeyModal";
+import PasskeyModal from "@/components/PasskeyModal";
 
-const Home = ({ searchParams }: SearchParamProps) => {
-  const isAdmin = searchParams?.admin === "true";
+export default function Home ({ searchParams }: SearchParamProps){
+  const isAdmin = searchParams.admin === "true";
 
   return (
     <div className="flex h-screen max-h-screen">
@@ -33,7 +33,6 @@ const Home = ({ searchParams }: SearchParamProps) => {
           </div>
         </div>
       </section>
-
       <Image
         src="/assets/images/onboarding-img.png"
         height={1000}
@@ -45,4 +44,4 @@ const Home = ({ searchParams }: SearchParamProps) => {
   );
 };
 
-export default Home;
+//export default Home;

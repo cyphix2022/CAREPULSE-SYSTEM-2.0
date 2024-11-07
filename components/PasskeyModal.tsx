@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -16,14 +17,15 @@ import {
 import {
   InputOTP,
   InputOTPGroup,
+  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { decryptKey, encryptKey } from "@/lib/utils";
 
-export const PasskeyModal = () => {
+const PasskeyModal = () => {
   const router = useRouter();
   const path = usePathname();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [passkey, setPasskey] = useState("");
   const [error, setError] = useState("");
 
@@ -35,19 +37,15 @@ export const PasskeyModal = () => {
   useEffect(() => {
     const accessKey = encryptedKey && decryptKey(encryptedKey);
 
-    if (path)
-      if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY!.toString()) {
+    if (path) {
+      if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
         setOpen(false);
         router.push("/admin");
       } else {
         setOpen(true);
       }
+    }
   }, [encryptedKey]);
-
-  const closeModal = () => {
-    setOpen(false);
-    router.push("/");
-  };
 
   const validatePasskey = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -63,6 +61,11 @@ export const PasskeyModal = () => {
     } else {
       setError("Invalid passkey. Please try again.");
     }
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+    router.push("/");
   };
 
   return (
@@ -81,7 +84,7 @@ export const PasskeyModal = () => {
             />
           </AlertDialogTitle>
           <AlertDialogDescription>
-            To access the admin page, please enter the passkey.
+            To Access the admin page, please enter the passkey.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div>
@@ -111,10 +114,12 @@ export const PasskeyModal = () => {
             onClick={(e) => validatePasskey(e)}
             className="shad-primary-btn w-full"
           >
-            Enter Admin Passkey
+            Enter Admin PassKey
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 };
+
+export default PasskeyModal;
