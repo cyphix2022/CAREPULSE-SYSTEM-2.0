@@ -1,63 +1,76 @@
-import { Button } from '@/components/ui/button';
-import { Doctors } from '@/constants';
-import { getAppointment } from '@/lib/actions/appointment.actions';
-import { formatDateTime } from '@/lib/utils';
-import Image from 'next/image'
-import Link from 'next/link'
-//import React from 'react'
+import * as Sentry from "@sentry/nextjs";
+import Image from "next/image";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import { Doctors } from "@/constants";
+import { getAppointment } from "@/lib/actions/appointment.actions";
+import { getUser } from "@/lib/actions/patient.actions";
+import { formatDateTime } from "@/lib/utils";
+
+// import React from 'react'
 
 // http://localhost:3000/patients/672c5119000a30b59684/new-appointment/success?appointmentId=672c5277000002f5bdfa
-const Success = async ({ params: { userId }, searchParams }: SearchParamProps) => {
-  const appointmentId = (searchParams?.appointmentId as string) || '';
+const Success = async ({
+  params: { userId },
+  searchParams,
+}: SearchParamProps) => {
+  const appointmentId = (searchParams?.appointmentId as string) || "";
   const appointment = await getAppointment(appointmentId);
-  const doctor = Doctors.find((doc) => doc.name === appointment.primaryPhysician);
+  const doctor = Doctors.find(
+    (doc) => doc.name === appointment.primaryPhysician
+  );
+  // i have added this line of code
+  const user = await getUser(userId);
 
+  // i have added a metric to the user_view (adding sentry details)
+  Sentry.metrics.set("user_view_appointment_success", user.name);
 
   return (
     <div className="flex h-screen max-h-screen px-[5%]">
       <div className="success-img">
-        <Link href='/'>
-        <Image
-          src="/assets/icons/logo-full.svg"
-          width={1000}
-          height={1000}
-          alt="logo"
-          className="h-10 w-fit"
-        />
+        <Link href="/">
+          <Image
+            src="/assets/icons/logo-full.svg"
+            width={1000}
+            height={1000}
+            alt="logo"
+            className="h-10 w-fit"
+          />
         </Link>
 
         <section className="flex flex-col items-center">
           <Image
-          src="/assets/gifs/success.gif" 
-          width={280} 
-          height={300} 
-          alt="success"
-           />
-        <h2 className="header mb-6 max-w-[600px] text-center">
-          Your <span className="text-green-500">appointment request</span> has been
-          successfully submitted!
-        </h2>
-        <p>We'll be in touch shortly to confirm.</p>
+            src="/assets/gifs/success.gif"
+            width={280}
+            height={300}
+            alt="success"
+          />
+          <h2 className="header mb-6 max-w-[600px] text-center">
+            Your <span className="text-green-500">appointment request</span> has
+            been successfully submitted!
+          </h2>
+          <p> We'll be in touch shortly to confirm.</p>
         </section>
 
         <section className="request-details">
           <p>Requested appointment details:</p>
           <div className="flex items-center gap-3">
             <Image
-            src={doctor?.image!}
-            alt="doctor"
-            width={100}
-            height={100}
-            className="size-6"
-            /> 
+              src={doctor?.image!}
+              alt="doctor"
+              width={100}
+              height={100}
+              className="size-6"
+            />
             <p className="Whitespace-nowrap">Dr. {doctor?.name}</p>
           </div>
           <div className="flex gap-2">
             <Image
-            src="/assets/icons/calendar.svg"
-            alt="calendar"
-            width={24}
-            height={24}
+              src="/assets/icons/calendar.svg"
+              alt="calendar"
+              width={24}
+              height={24}
             />
             <p>{formatDateTime(appointment.schedule).dateTime}</p>
           </div>
@@ -69,12 +82,10 @@ const Success = async ({ params: { userId }, searchParams }: SearchParamProps) =
           </Link>
         </Button>
 
-        <p className="copyright">
-          © 2024 CarePluse
-        </p>
+        <p className="copyright">© 2024 CarePluse</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Success
+export default Success;
