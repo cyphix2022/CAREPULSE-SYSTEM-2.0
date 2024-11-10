@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
+  // eslint-disable-next-line no-unused-vars
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -17,6 +18,7 @@ import {
 import {
   InputOTP,
   InputOTPGroup,
+  // eslint-disable-next-line no-unused-vars
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
@@ -24,6 +26,7 @@ import { decryptKey, encryptKey } from "@/lib/utils";
 
 const PasskeyModal = () => {
   const router = useRouter();
+  // eslint-disable-next-line no-unused-vars
   const path = usePathname();
   const [open, setOpen] = useState(true);
   const [passkey, setPasskey] = useState("");
@@ -37,15 +40,11 @@ const PasskeyModal = () => {
   useEffect(() => {
     const accessKey = encryptedKey && decryptKey(encryptedKey);
 
-    if (path) {
-      if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
-        setOpen(false);
-        router.push("/admin");
-      } else {
-        setOpen(true);
-      }
+    if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+      setOpen(false);
+      router.push("/admin");
     }
-  }, [encryptedKey]);
+  }, [encryptedKey, router]);
 
   const validatePasskey = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -54,10 +53,9 @@ const PasskeyModal = () => {
 
     if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
       const encryptedKey = encryptKey(passkey);
-
       localStorage.setItem("accessKey", encryptedKey);
-
       setOpen(false);
+      router.push("/admin");
     } else {
       setError("Invalid passkey. Please try again.");
     }
