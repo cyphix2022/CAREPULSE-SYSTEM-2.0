@@ -100,7 +100,7 @@ export const updateAppointment = async ({
       appointment
     );
 
-    if (updatedAppointment) {
+    if (!updatedAppointment) {
       throw new Error("Appointment not found");
     }
 
@@ -122,7 +122,8 @@ export const updateAppointment = async ({
     revalidatePath("/admin");
     return parseStringify(updatedAppointment);
   } catch (error) {
-    console.log(error);
+    console.error("Error updating appointment:", error);
+    throw error;
   }
 };
 
