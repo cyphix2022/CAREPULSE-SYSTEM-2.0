@@ -103,12 +103,18 @@ export const getPatient = async (userId: string) => {
       PATIENT_COLLECTION_ID!,
       [Query.equal("userId", [userId])]
     );
-
+    // Check if the patient exists ( i added these lines of code)
+    if (!patients.documents[0]) {
+      return null;
+    }
+    ///
     return parseStringify(patients.documents[0]);
   } catch (error) {
     console.error(
       "An error occurred while retrieving the patient details:",
       error
     );
+    // Return null if an error occurs (i also added this line of code)
+    return null;
   }
 };
