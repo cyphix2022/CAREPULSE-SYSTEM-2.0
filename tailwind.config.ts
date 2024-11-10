@@ -89,3 +89,5 @@ export default config;
 // Today is Friday and i have tried to add sentry and Twilio api, things are working partially
 
 // Today is a Saturday and am try to create another branch
+
+// On a Sunday i have modified the appointment.actions.ts file to resolve an error
